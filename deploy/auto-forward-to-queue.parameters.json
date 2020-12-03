@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+		"Alert.Name": {
+            "value": null
+		},
+		"ServiceBus.Namespace.Name": {
+            "value": null
+		},
+		"ServiceBus.Topic.Name": {
+            "value": null
+		},
+		"ServiceBus.Subscription.Name": {
+            "value": null
+		},
+		"ServiceBus.Subscription.Filter.Name": {
+            "value": null
+		},
+		"ServiceBus.Subscription.Filter.Expression": {
+            "value": null
+		}
+    }
+}
