@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Sample.Simulators.AzureFunction": {
+      "commandName": "Project",
+      "commandLineArgs": "host start --port 7079 --pause-on-error"
+    }
+  }
+}

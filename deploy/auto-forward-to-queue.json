@@ -20,7 +20,7 @@
 		},
 		"ServiceBus.Subscription.Filter.Expression": {
 			"type": "String",
-			"defaultValue": "MessageType = 'OrdersV1' OR MessageType = 'SalesV1'"
+			"defaultValue": "MessageType = 'OrdersV1' OR MessageType = 'ShipmentV1'"
 		}
 	},
 	"variables": {
