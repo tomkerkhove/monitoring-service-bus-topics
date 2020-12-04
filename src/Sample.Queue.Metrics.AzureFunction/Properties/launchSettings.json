@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Sample.Queue.Metrics.AzureFunction": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 33387,
+      "useSSL": false
+    }
+  }
+}
