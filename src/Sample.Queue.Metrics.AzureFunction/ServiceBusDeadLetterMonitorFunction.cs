@@ -46,7 +46,8 @@ namespace Sample.Queue.Metrics.AzureFunction
                 {"Session ID", deadLetteredMessage.SessionId}
             };
 
-            _logger.LogMetric("Deadlettered Message", 1, contextualInformation);
+            // Use enqueued time to ensure metric is reported when it was being deadlettered
+            _logger.LogMetric("Deadlettered Message", 1, deadLetteredMessage.SystemProperties.EnqueuedTimeUtc, contextualInformation);
 
             outputMessage = deadLetteredMessage.Clone();
         }
