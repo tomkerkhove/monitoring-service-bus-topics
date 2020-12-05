@@ -40,7 +40,6 @@ namespace Sample.Queue.Metrics.AzureFunction
             var contextualInformation = new Dictionary<string, object>
             {
                 {"Message Type", messageType},
-                {"MessageType", messageType},
                 {"Topic Name", topicName},
                 {"Subscription Name", subscriptionName},
                 {"Message ID", deadLetteredMessage.MessageId},
