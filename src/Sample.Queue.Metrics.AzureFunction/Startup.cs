@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Sample.Queue.Metrics.AzureFunction;
 using Serilog;
 using Serilog.Configuration;
@@ -32,7 +33,7 @@ namespace Sample.Queue.Metrics.AzureFunction
             
             builder.Services.AddLogging(loggingBuilder =>
             {
-                //loggingBuilder.ClearProvidersExceptFunctionProviders();
+                loggingBuilder.ClearProvidersExceptFunctionProviders();
                 loggingBuilder.AddSerilog(logger);
             });
         }
