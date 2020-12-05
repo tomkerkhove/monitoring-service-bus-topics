@@ -12,7 +12,7 @@ namespace Sample.Simulators.AzureFunction
     public class ShipmentGeneratorFunction : GeneratorFunction
     {
         [FunctionName("shipment-generator")]
-        public async Task Run([TimerTrigger("*30 * * * * *")]TimerInfo timerInfo, ILogger logger,
+        public async Task Run([TimerTrigger("*/30 * * * * *")]TimerInfo timerInfo, ILogger logger,
             [ServiceBus("%TopicName%", Connection = "ServiceBusConnectionString")] IAsyncCollector<Message> outputMessages)
         {
             logger.LogInformation($"Generating new batch of shipments at: {DateTime.UtcNow}");
