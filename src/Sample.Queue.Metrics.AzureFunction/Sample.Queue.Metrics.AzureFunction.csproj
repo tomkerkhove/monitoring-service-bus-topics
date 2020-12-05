@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Arcus.Observability.Telemetry.AzureFunctions" Version="1.0.0" />
     <PackageReference Include="Arcus.Observability.Telemetry.Serilog.Sinks.ApplicationInsights" Version="1.0.0" />
+    <PackageReference Include="Humanizer.Core" Version="2.8.26" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.5" />

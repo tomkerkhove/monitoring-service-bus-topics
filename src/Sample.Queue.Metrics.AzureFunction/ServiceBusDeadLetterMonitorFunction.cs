@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Arcus.Observability.Correlation;
 using GuardNet;
+using Humanizer;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +40,7 @@ namespace Sample.Queue.Metrics.AzureFunction
 
             var contextualInformation = new Dictionary<string, object>
             {
-                {"Message Type", messageType.ToString()},
+                {"Message Type", messageType.Humanize()},
                 {"Topic Name", topicName},
                 {"Subscription Name", subscriptionName},
                 {"Message ID", deadLetteredMessage.MessageId},
