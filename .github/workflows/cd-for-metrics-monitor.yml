@@ -1,4 +1,4 @@
-name: Build & Deploy Azure Function
+name: Build & Deploy deadletter monitoring
 
 on:
   [push]
