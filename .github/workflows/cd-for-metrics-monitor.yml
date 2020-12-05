@@ -1,4 +1,4 @@
-name: Build & Deploy deadletter monitoring
+name: Build & Deploy Deadletter Monitoring
 
 on:
   [push]
