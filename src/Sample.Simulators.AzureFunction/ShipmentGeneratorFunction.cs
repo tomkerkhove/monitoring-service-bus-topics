@@ -12,12 +12,12 @@ namespace Sample.Simulators.AzureFunction
     public class ShipmentGeneratorFunction : GeneratorFunction
     {
         [FunctionName("shipment-generator")]
-        public async Task Run([TimerTrigger("*/30 * * * * *")]TimerInfo timerInfo, ILogger logger,
+        public async Task Run([TimerTrigger("*/15 * * * * *")]TimerInfo timerInfo, ILogger logger,
             [ServiceBus("%TopicName%", Connection = "ServiceBusConnectionString")] IAsyncCollector<Message> outputMessages)
         {
             logger.LogInformation($"Generating new batch of shipments at: {DateTime.UtcNow}");
 
-            for (int messageCount = 1; messageCount <= 25; messageCount++)
+            for (int messageCount = 1; messageCount <= 5; messageCount++)
             {
                 var shipment = GenerateShipment();
                 var message = WrapInServiceBusMessage(MessageType.ShipmentV1, shipment);

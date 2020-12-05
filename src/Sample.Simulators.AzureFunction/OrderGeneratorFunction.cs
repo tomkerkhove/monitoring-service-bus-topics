@@ -12,12 +12,12 @@ namespace Sample.Simulators.AzureFunction
     public class OrderGeneratorFunction : GeneratorFunction
     {
         [FunctionName("order-generator")]
-        public async Task Run([TimerTrigger("*/30 * * * * *")]TimerInfo timerInfo, ILogger logger,
+        public async Task Run([TimerTrigger("*/15 * * * * *")]TimerInfo timerInfo, ILogger logger,
             [ServiceBus("%TopicName%", Connection = "ServiceBusConnectionString")] IAsyncCollector<Message> outputMessages)
         {
             logger.LogInformation($"Generating new batch of orders at: {DateTime.UtcNow}");
 
-            for (int messageCount = 1; messageCount <= 25; messageCount++)
+            for (int messageCount = 1; messageCount <= 5; messageCount++)
             {
                 var order = GenerateOrder();
                 var message = WrapInServiceBusMessage(MessageType.OrdersV1, order);
