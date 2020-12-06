@@ -2,41 +2,35 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "scheduledqueryrules_Orders_Alert_name": {
+		"Alert.Name": {
+			"value": null
+		},
+		"ApplicationInsights.Name": {
+			"value": null
+		},
+		"AzureFunction.Name": {
+			"value": null
+		},
+		"AzureFunction.Plan.Consumption.Name": {
+			"value": null
+		},
+		"ServiceBus.Namespace.Name": {
+			"value": null
+		},
+		"ServiceBus.Topic.Name": {
+			"value": null
+		},
+		"ServiceBus.Subscription.Name": {
             "value": null
-        },
-        "sites_service_bus_monitoring_generator_name": {
+		},
+		"ServiceBus.Subscription.Filter.Name": {
             "value": null
-        },
-        "storageAccounts_servicebusmonitoring_name": {
+		},
+		"ServiceBus.Subscription.Filter.Expression": {
             "value": null
-        },
-        "metricalerts_Deadlettered_Order_Messages_name": {
+		},
+		"StorageAccount.Name": {
             "value": null
-        },
-        "sites_service_bus_monitoring_deadletter_monitor_name": {
-            "value": null
-        },
-        "dashboards_f76dc63f_6501_4af5_a988_455acd42c07c_name": {
-            "value": null
-        },
-        "serverfarms_ASP_servicebusmonitoringcustommetri_87c9_name": {
-            "value": null
-        },
-        "serverfarms_ASP_servicebusmonitoringcustommetri_a0a7_name": {
-            "value": null
-        },
-        "components_service_bus_monitoring_custom_metrics_name": {
-            "value": null
-        },
-        "namespaces_service_bus_monitoring_custom_metrics_namespace_name": {
-            "value": null
-        },
-        "smartdetectoralertrules_failure_anomalies___service_bus_monitoring_custom_metrics_name": {
-            "value": null
-        },
-        "actiongroups_application_insights_smart_detection_externalid": {
-            "value": null
-        }
+		}
     }
 }
