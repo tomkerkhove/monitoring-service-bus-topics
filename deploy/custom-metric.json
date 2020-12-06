@@ -1,0 +1,472 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "StorageAccount.Name": {
+            "defaultValue": "servicebusmonitoring",
+            "type": "String"
+        },
+        "Alert.Name": {
+            "defaultValue": "Deadlettered Order Messages",
+            "type": "String"
+        },
+        "sites_service_bus_monitoring_deadletter_monitor_name": {
+            "defaultValue": "service-bus-monitoring-deadletter-monitor",
+            "type": "String"
+        },
+        "Dashboard.Name": {
+            "defaultValue": "f76dc63f-6501-4af5-a988-455acd42c07c",
+            "type": "String"
+        },
+        "serverfarms_ASP_servicebusmonitoringcustommetri_87c9_name": {
+            "defaultValue": "ASP-servicebusmonitoringcustommetri-87c9",
+            "type": "String"
+        },
+        "serverfarms_ASP_servicebusmonitoringcustommetri_a0a7_name": {
+            "defaultValue": "ASP-servicebusmonitoringcustommetri-a0a7",
+            "type": "String"
+        },
+        "ApplicationInsights.Name": {
+            "defaultValue": "service-bus-monitoring-custom-metrics",
+            "type": "String"
+        },
+        "ServiceBus.Namespace.Name": {
+            "defaultValue": "service-bus-monitoring-custom-metrics-namespace",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[parameters('ApplicationInsights.Name')]",
+            "location": "westeurope",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "RetentionInDays": 30
+            }
+        },
+        {
+            "type": "Microsoft.Portal/dashboards",
+            "apiVersion": "2020-09-01-preview",
+            "name": "[parameters('Dashboard.Name')]",
+            "location": "westeurope",
+            "tags": {
+                "hidden-title": "Monitoring Azure Service Bus Topics (Custom Metrics)"
+            },
+            "properties": {
+                "lenses": [
+                    {
+                        "order": 0,
+                        "parts": [
+                            {
+                                "position": {
+                                    "x": 0,
+                                    "y": 0,
+                                    "rowSpan": 6,
+                                    "colSpan": 9
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {},
+                                        {}
+                                    ],
+                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                                    "settings": {
+                                        "content": {}
+                                    }
+                                }
+                            },
+                            {
+                                "position": {
+                                    "x": 9,
+                                    "y": 0,
+                                    "rowSpan": 6,
+                                    "colSpan": 7
+                                },
+                                "metadata": {
+                                    "inputs": [
+                                        {},
+                                        {}
+                                    ],
+                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                                    "settings": {
+                                        "content": {}
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "metadata": {
+                    "model": {}
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces",
+            "apiVersion": "2018-01-01-preview",
+            "name": "[parameters('ServiceBus.Namespace.Name')]",
+            "location": "West Europe",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard"
+            },
+            "properties": {
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2020-08-01-preview",
+            "name": "[parameters('StorageAccount.Name')]",
+            "location": "westeurope",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('serverfarms_ASP_servicebusmonitoringcustommetri_87c9_name')]",
+            "location": "West Europe",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('serverfarms_ASP_servicebusmonitoringcustommetri_a0a7_name')]",
+            "location": "West Europe",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "type": "microsoft.insights/metricalerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('Alert.Name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('ApplicationInsights.Name'))]"
+            ],
+            "properties": {
+                "description": "Description",
+                "severity": 3,
+                "enabled": true,
+                "scopes": [
+                    "[resourceId('microsoft.insights/components', parameters('ApplicationInsights.Name'))]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 1,
+                            "name": "Metric1",
+                            "metricNamespace": "Azure.ApplicationInsights",
+                            "metricName": "Deadlettered Messages (OrdersV1)",
+                            "operator": "GreaterThanOrEqual",
+                            "timeAggregation": "Count",
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "targetResourceType": "microsoft.insights/components",
+                "actions": []
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/queues",
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('ServiceBus.Namespace.Name'), '/deadletter-events-example-subscription')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('ServiceBus.Namespace.Name'))]"
+            ],
+            "properties": {
+                "lockDuration": "PT1M",
+                "maxSizeInMegabytes": 1024,
+                "requiresDuplicateDetection": false,
+                "requiresSession": false,
+                "defaultMessageTimeToLive": "P10675199DT2H48M5.4775807S",
+                "deadLetteringOnMessageExpiration": false,
+                "enableBatchedOperations": false,
+                "duplicateDetectionHistoryTimeWindow": "PT10M",
+                "maxDeliveryCount": 10,
+                "status": "Active",
+                "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+                "enablePartitioning": false,
+                "enableExpress": false
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/topics",
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('ServiceBus.Namespace.Name'), '/events')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('ServiceBus.Namespace.Name'))]"
+            ],
+            "properties": {
+                "defaultMessageTimeToLive": "P14D",
+                "maxSizeInMegabytes": 1024,
+                "requiresDuplicateDetection": false,
+                "duplicateDetectionHistoryTimeWindow": "PT10M",
+                "enableBatchedOperations": true,
+                "status": "Active",
+                "supportOrdering": true,
+                "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+                "enablePartitioning": false,
+                "enableExpress": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('sites_service_bus_monitoring_deadletter_monitor_name')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_servicebusmonitoringcustommetri_87c9_name'))]"
+            ],
+            "kind": "functionapp,linux",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_service_bus_monitoring_deadletter_monitor_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_service_bus_monitoring_deadletter_monitor_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_servicebusmonitoringcustommetri_87c9_name'))]",
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {},
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "redundancyMode": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_service_bus_monitoring_deadletter_monitor_name'), '/web')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_service_bus_monitoring_deadletter_monitor_name'))]"
+            ],
+            "properties": {
+                "numberOfWorkers": -1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "linuxFxVersion": "DOTNET|3.1",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$service-bus-monitoring-deadletter-monitor",
+                "azureStorageAccounts": {},
+                "scmType": "None",
+                "use32BitWorkerProcess": false,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "cors": {
+                    "allowedOrigins": [
+                        "https://functions.azure.com",
+                        "https://functions-staging.azure.com",
+                        "https://functions-next.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "ftpsState": "AllAllowed",
+                "reservedInstanceCount": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_service_bus_monitoring_deadletter_monitor_name'), '/azure-service-bus-deadletter-monitor')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_service_bus_monitoring_deadletter_monitor_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://service-bus-monitoring-deadletter-monitor.azurewebsites.net/admin/vfs/home/site/wwwroot/azure-service-bus-deadletter-monitor/",
+                "script_href": "https://service-bus-monitoring-deadletter-monitor.azurewebsites.net/admin/vfs/home/site/wwwroot/bin/Sample.Queue.Metrics.AzureFunction.dll",
+                "config_href": "https://service-bus-monitoring-deadletter-monitor.azurewebsites.net/admin/vfs/home/site/wwwroot/azure-service-bus-deadletter-monitor/function.json",
+                "href": "https://service-bus-monitoring-deadletter-monitor.azurewebsites.net/admin/functions/azure-service-bus-deadletter-monitor",
+                "config": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_service_bus_monitoring_deadletter_monitor_name'), '/', parameters('sites_service_bus_monitoring_deadletter_monitor_name'), '.azurewebsites.net')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_service_bus_monitoring_deadletter_monitor_name'))]"
+            ],
+            "properties": {
+                "siteName": "service-bus-monitoring-deadletter-monitor",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('ServiceBus.Namespace.Name'), '/events/example-subscription')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('ServiceBus.Namespace.Name'), 'events')]",
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('ServiceBus.Namespace.Name'))]"
+            ],
+            "properties": {
+                "lockDuration": "PT30S",
+                "requiresSession": false,
+                "defaultMessageTimeToLive": "P14D",
+                "deadLetteringOnMessageExpiration": false,
+                "deadLetteringOnFilterEvaluationExceptions": false,
+                "maxDeliveryCount": 1,
+                "status": "Active",
+                "enableBatchedOperations": true,
+                "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S"
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions/rules",
+            "apiVersion": "2017-04-01",
+            "name": "[concat(parameters('ServiceBus.Namespace.Name'), '/events/example-subscription/$Default')]",
+            "location": "West Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces/topics/subscriptions', parameters('ServiceBus.Namespace.Name'), 'events', 'example-subscription')]",
+                "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('ServiceBus.Namespace.Name'), 'events')]",
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('ServiceBus.Namespace.Name'))]"
+            ],
+            "properties": {
+                "action": {},
+                "filterType": "SqlFilter",
+                "sqlFilter": {
+                    "sqlExpression": "MessageType = 'OrdersV1' OR MessageType = 'ShipmentV1'",
+                    "compatibilityLevel": 20
+                }
+            }
+        }
+    ]
+}
