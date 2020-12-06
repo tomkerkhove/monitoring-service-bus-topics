@@ -14,10 +14,6 @@
             "defaultValue": "service-bus-monitoring-deadletter-monitor",
             "type": "String"
         },
-        "Dashboard.Name": {
-            "defaultValue": "f76dc63f-6501-4af5-a988-455acd42c07c",
-            "type": "String"
-        },
         "serverfarms_ASP_servicebusmonitoringcustommetri_87c9_name": {
             "defaultValue": "ASP-servicebusmonitoringcustommetri-87c9",
             "type": "String"
@@ -46,63 +42,6 @@
             "properties": {
                 "Application_Type": "web",
                 "RetentionInDays": 30
-            }
-        },
-        {
-            "type": "Microsoft.Portal/dashboards",
-            "apiVersion": "2020-09-01-preview",
-            "name": "[parameters('Dashboard.Name')]",
-            "location": "westeurope",
-            "tags": {
-                "hidden-title": "Monitoring Azure Service Bus Topics (Custom Metrics)"
-            },
-            "properties": {
-                "lenses": [
-                    {
-                        "order": 0,
-                        "parts": [
-                            {
-                                "position": {
-                                    "x": 0,
-                                    "y": 0,
-                                    "rowSpan": 6,
-                                    "colSpan": 9
-                                },
-                                "metadata": {
-                                    "inputs": [
-                                        {},
-                                        {}
-                                    ],
-                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
-                                    "settings": {
-                                        "content": {}
-                                    }
-                                }
-                            },
-                            {
-                                "position": {
-                                    "x": 9,
-                                    "y": 0,
-                                    "rowSpan": 6,
-                                    "colSpan": 7
-                                },
-                                "metadata": {
-                                    "inputs": [
-                                        {},
-                                        {}
-                                    ],
-                                    "type": "Extension/HubsExtension/PartType/MonitorChartPart",
-                                    "settings": {
-                                        "content": {}
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ],
-                "metadata": {
-                    "model": {}
-                }
             }
         },
         {
