@@ -40,20 +40,14 @@ namespace Sample.Queue.Metrics.AzureFunction
             // Provide dimensions around the deadlettered message
             var contextualInformation = new Dictionary<string, object>
             {
+                {"Message Type", messageType.ToString()},
                 {"Topic Name", topicName},
                 {"Subscription Name", subscriptionName},
                 {"Message ID", deadLetteredMessage.MessageId},
                 {"Session ID", deadLetteredMessage.SessionId}
             };
 
-            // 1. Measure a single-dimensional metric to plot on dashboards
-            // This is required because Azure Monitor alerts are not discovering our dimensions
-            // Note - Use enqueued time to ensure metric is reported when it was being deadlettered
-            _logger.LogMetric($"Deadlettered Messages ({messageType})", 1, deadLetteredMessage.SystemProperties.EnqueuedTimeUtc, contextualInformation);
-
-            // 2. Measure a multi-dimensional metric to plot on dashboards
-            // Note - Use enqueued time to ensure metric is reported when it was being deadlettered
-            contextualInformation.Add("Message Type", messageType);
+            // Measure metric
             _logger.LogMetric("Deadlettered Messages", 1, deadLetteredMessage.SystemProperties.EnqueuedTimeUtc, contextualInformation);
 
             outputMessage = deadLetteredMessage.Clone();
