@@ -2,6 +2,8 @@
 
 Examples for my Monitoring Azure Service Bus Topics blog post.
 
+> ⚠ These examples are provided as-is and should not be used in production
+
 ## Automatically forward dead-letter messages to a dedicated queue
 
 Automatically forward dead-letter messages to a dedicated queue using built-in Azure Service Bus functionality. Visualization & alerts can rely on Azure Service Bus metrics in Azure Monitor, ie Active Messages.
