@@ -1,6 +1,6 @@
 # Monitoring Azure Service Bus Topics
 
-Examples for my Monitoring Azure Service Bus Topics blog post.
+Examples for my [Monitoring Azure Service Bus Topics blog post](https://blog.tomkerkhove.be/2020/12/11/monitoring-azure-service-bus-topic-subscriptions/).
 
 > ⚠ These examples are provided as-is and should not be used in production
 
